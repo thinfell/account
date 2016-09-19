@@ -99,7 +99,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function getUserByMobile($mobile)
     {
-        return $UserData = User::find()->where(['mobile' => $account])->one();
+        return $UserData = User::find()->where(['mobile' => $mobile])->one();
     }
 
     public static function getAccountType($account)
