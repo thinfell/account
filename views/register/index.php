@@ -15,9 +15,9 @@ SendSMSAsset::register($this);
     var sendButton = 'getSMS';
 </script>
 <div class="register-index">
-    <h1>加入车林通</h1>
+    <h1>注册</h1>
 
-    <p>注册帐号，玩转所有汽车服务！</p>
+    <p>注册帐号，玩转所有服务！</p>
 
     <div class="row">
         <div class="col-lg-4">

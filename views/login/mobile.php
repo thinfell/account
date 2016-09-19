@@ -31,9 +31,9 @@ $items = [
     var sendButton = 'getSMS';
 </script>
 <div class="mobile-login">
-    <h1>登录车林通</h1>
+    <h1>登录</h1>
 
-    <p>一个帐号，玩转所有汽车服务！</p>
+    <p>一个帐号，玩转所有服务！</p>
 
     <div class="row">
         <div class="col-lg-4">
