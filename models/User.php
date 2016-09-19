@@ -56,7 +56,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'id' => '用户ID',
+            'id' => '用户编号',
             'name' => '用户名',
             'avatar' => '头像',
             'mobile' => '手机号',
