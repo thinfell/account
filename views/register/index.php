@@ -31,7 +31,7 @@ SendSMSAsset::register($this);
                         'content' => '<i class="glyphicon glyphicon-phone"></i>'
                     ]
                 ]
-            ])->textInput(['placeholder' => '手机'])->label(false) ?>
+            ])->textInput(['placeholder' => '手机号'])->label(false) ?>
 
             <?= $form->field($model, 'SMS', [
                 'addon' => [

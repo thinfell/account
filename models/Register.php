@@ -58,7 +58,7 @@ class Register extends Model
     public function attributeLabels()
     {
         return [
-            'mobile' => '账号',
+            'mobile' => '手机号',
             'password' => '密码',
             'password_repeat' => '确认密码',
             'SMS' => '短信动态码',
