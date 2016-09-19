@@ -70,7 +70,7 @@ $items = [
                         'content' => '<i class="glyphicon glyphicon-user"></i>'
                     ]
                 ]
-            ])->textInput(['placeholder' => '邮箱/手机/用户名'])->label(false) ?>
+            ])->textInput(['placeholder' => '邮箱/手机号/用户名'])->label(false) ?>
 
             <?= $form->field($model, 'password', [
                 'addon' => [
