@@ -39,11 +39,14 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['mobile'], 'required'],
+            [['name', 'mobile'], 'required'],
             [['status'], 'integer'],
-            [['name', 'avatar', 'mobile', 'email', 'password_hash'], 'string', 'max' => 255],
+            [['name', 'avatar', 'email', 'password_hash'], 'string', 'max' => 255],
+            [['mobile'], 'string', 'max' => 11],
             [['auth_key'], 'string', 'max' => 32],
+            [['name'], 'unique'],
             [['mobile'], 'unique'],
+            [['email'], 'unique'],
         ];
     }
 
@@ -94,9 +97,9 @@ class User extends ActiveRecord implements IdentityInterface
         return $UserData;
     }
 
-    public static function getUserByMobile($mobile)
+    public function getUserByMobile($mobile)
     {
-        return $UserData = User::find()->where(['mobile' => $mobile])->one();
+        return $UserData = User::find()->where(['mobile' => $account])->one();
     }
 
     public static function getAccountType($account)
