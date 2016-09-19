@@ -102,7 +102,7 @@ class SmsController extends Controller
             return [
                 'code' => 0,
                 'attribute' => 'mobile',
-                'message' => '请求来路不正确',
+                'message' => '请求来路不正确。',
             ];
         }
     }

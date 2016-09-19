@@ -28,7 +28,7 @@ class Login extends Model
 
             [['mobile', 'SMS'], 'required', 'on' => 'mobile'],
             [['smsid'], 'integer', 'on' => 'mobile'],
-            [['mobile'], 'match', 'pattern' => '/^1[34578]{1}\d{9}$/', 'message' => '手机号格式不正确', 'on' => 'mobile'],
+            [['mobile'], 'match', 'pattern' => '/^1[34578]{1}\d{9}$/', 'message' => '手机号格式不正确。', 'on' => 'mobile'],
             ['mobile', 'exist', 'targetClass' => '\app\models\User', 'message' => '手机号未注册,请注册后登录。', 'on' => 'mobile'],
             [['SMS'], 'string', 'min' => 4, 'max' => 4, 'message' => '{attribute}最少四位数。', 'on' => 'mobile'],
             ['SMS', 'validateSMS', 'on' => 'mobile'],
@@ -43,9 +43,9 @@ class Login extends Model
 
             $SMS = Sms::find()->where(['mobile' => $this->mobile, 'sms' => $this->SMS, 'id' => $this->smsid])->one();
             if (!$SMS){
-                $this->addError($attribute, '验证码错误');
+                $this->addError($attribute, '验证码错误。');
             }elseif (time() - $SMS->send_time > 300) {
-                $this->addError($attribute, '验证码超过5分钟有效期');
+                $this->addError($attribute, '验证码超过5分钟有效期。');
             }
         }
     }

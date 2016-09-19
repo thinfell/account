@@ -52,9 +52,9 @@ class PasswordReset extends Model
             $mobile = Yii::$app->session->get('mobile');
             $SMS = Sms::find()->where(['mobile' => $mobile, 'sms' => $this->SMS, 'id' => $this->smsid])->one();
             if (!$SMS){
-                $this->addError($attribute, '验证码错误');
+                $this->addError($attribute, '验证码错误。');
             }elseif (time() - $SMS->send_time > 300) {
-                $this->addError($attribute, '验证码超过5分钟有效期');
+                $this->addError($attribute, '验证码超过5分钟有效期。');
             }
         }
     }
