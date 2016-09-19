@@ -8,7 +8,7 @@ class m160919_091334_sms extends Migration
     {
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
-            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB COMMENT="短信动态码"';
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE=InnoDB COMMENT="短信动态码"';
         }
 
         $this->createTable('sms', [
