@@ -79,6 +79,6 @@ class Register extends Model
         $user->setPassword($this->password);
         $user->generateAuthKey();
 
-        return $user->save() ? $user : null;
+        return $user->save() ? Yii::$app->user->login(User::getUserByMobile($this->mobile), 0) : null;
     }
 }
