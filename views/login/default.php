@@ -25,18 +25,7 @@ $items = [
 
 ?>
 <?php
-    if(Yii::$app->session->get('regMobile')){
-    ?>
-<div class="alert alert-success alert-dismissible" role="alert">
-    <button type="button" class="close" data-dismiss="alert">
-        <span aria-hidden="true">&times;</span>
-        <span class="sr-only">Close</span>
-    </button>
-    <strong>注册成功!</strong> 您可以使用<?=Yii::$app->session->get('regMobile')?>登录, 如果登录遇到问题请联系管理员.
-</div>
-<?php
-        Yii::$app->session->remove('regMobile');
-    }elseif(Yii::$app->session->get('step') == 3){
+    if(Yii::$app->session->get('step') == 3){
 ?>
 <div class="alert alert-success alert-dismissible" role="alert">
     <button type="button" class="close" data-dismiss="alert">
