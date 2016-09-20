@@ -32,7 +32,7 @@ $items = [
         <span aria-hidden="true">&times;</span>
         <span class="sr-only">Close</span>
     </button>
-    <strong>密码找回成功!</strong> 您可以使用新密码登录, 如果登录遇到问题请联系管理员.
+    <strong>密码找回成功!</strong> 您可以使用新密码登录, 如果登录遇到问题请联系管理员!
 </div>
 <?php
         Yii::$app->session->remove('step');
