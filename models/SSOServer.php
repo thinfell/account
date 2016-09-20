@@ -1,5 +1,7 @@
 <?php
 
+namespace app\models;
+
 use Jasny\ValidationResult;
 use Jasny\SSO;
 
@@ -8,7 +10,7 @@ use Jasny\SSO;
  * 
  * Normally you'd fetch the broker info and user info from a database, rather then declaring them in the code.
  */
-class MySSOServer extends SSO\Server
+class SSOServer extends SSO\Server
 {
     /**
      * Registered brokers
