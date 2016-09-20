@@ -16,7 +16,7 @@ class m160919_091723_user extends Migration
             'name' => $this->string()->unique()->notNull()->comment('用户名'),
             'avatar' => $this->string()->defaultValue('')->comment('头像'),
             'mobile' => $this->string(11)->unique()->notNull()->comment('手机号'),
-            'email' => $this->string()->unique()->defaultValue('')->comment('邮箱'),
+            'email' => $this->string()->defaultValue('')->comment('邮箱'),
             'password_hash' => $this->string()->defaultValue('')->comment('密码'),
             'status' => $this->smallInteger(6)->defaultValue(1)->comment('状态'),
             'auth_key' => $this->string(32)->defaultValue('')->comment('Auth Key'),
