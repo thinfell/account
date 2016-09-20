@@ -26,10 +26,16 @@ class LoginController extends Controller
             return $this->goHome();
         }
 
+        if (!Yii::$app->session->has('from')){
+            $from = Yii::$app->request->get('from');
+            Yii::$app->session->set('from', $from);
+        }
+
         $model = new Login();
         $model->setScenario('default');
         if ($model->load(Yii::$app->request->post()) && $model->Login()) {
-            return $this->goHome();
+            $from_url = Yii::$app->session->get('from');
+            return $this->redirect($from_url);
         }
 
         return $this->render('default',[

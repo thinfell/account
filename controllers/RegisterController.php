@@ -26,11 +26,15 @@ class RegisterController extends Controller
             return $this->goHome();
         }
 
+        if (!Yii::$app->session->has('from')){
+            $from = Yii::$app->request->get('from');
+            Yii::$app->session->set('from', $from);
+        }
+
         $model = new Register();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            $session = Yii::$app->session;
-            $session->set('regMobile', $model->mobile);
-            return $this->redirect(['/login/default']);
+            $from_url = Yii::$app->session->get('from');
+            return $this->redirect($from_url);
         }
 
         return $this->render('index',[
