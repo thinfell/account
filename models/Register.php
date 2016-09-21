@@ -81,4 +81,20 @@ class Register extends Model
 
         return $user->save() ? Yii::$app->user->login(User::getUserByMobile($this->mobile), 0) : null;
     }
+
+    public function SSOsignup()
+    {
+        if (!$this->validate()) {
+            return null;
+        }
+
+        $user = new User();
+        $user->status = 1;
+        $user->name = 'clt'.$this->mobile;
+        $user->mobile = $this->mobile;
+        $user->setPassword($this->password);
+        $user->generateAuthKey();
+
+        return $user->save() ? true : null;
+    }
 }

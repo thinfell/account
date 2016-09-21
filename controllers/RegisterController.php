@@ -31,8 +31,13 @@ class RegisterController extends Controller
             Yii::$app->session->set('from', $from);
         }
 
+        $SSO = Yii::$app->request->get('SSO');
+
         $model = new Register();
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+        if ($model->load(Yii::$app->request->post()) && $SSO == 'yes' && $model->SSOsignup()) {
+            $from_url = Yii::$app->session->get('from');
+            return $this->redirect($from_url);
+        }elseif ($model->load(Yii::$app->request->post()) && $model->signup()) {
             $from_url = Yii::$app->session->get('from');
             return $this->redirect($from_url);
         }
