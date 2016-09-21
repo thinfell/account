@@ -16,7 +16,7 @@ class SsoApiController extends \yii\web\Controller
         </head>
         <script language="javascript">
             function process() {
-                var returnUrl = '<?=Yii::$app->request->get('from')?>';
+                var returnUrl = '<?=Yii::$app->session->get('from')?>';
                 if (returnUrl) {
                     window.location.href = returnUrl;
                 }
