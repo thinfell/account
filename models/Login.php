@@ -106,20 +106,20 @@ class Login extends Model
         }
     }
 
-    public function SSOMobileLogin()
+    public function MobileLogin()
     {
         if ($this->validate()) {
-            return true;
+            return Yii::$app->user->login(User::getUserByMobile($this->mobile), $this->rememberMe ? 3600 * 24 * 30 : 0);
         } else {
             return false;
 
         }
     }
 
-    public function MobileLogin()
+    public function SSOMobileLogin()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login(User::getUserByMobile($this->mobile), $this->rememberMe ? 3600 * 24 * 30 : 0);
+            return true;
         } else {
             return false;
 
