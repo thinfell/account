@@ -33,7 +33,13 @@ class LoginController extends Controller
 
         $model = new Login();
         $model->setScenario('default');
-        if ($model->load(Yii::$app->request->post()) && $model->Login()) {
+
+        $SSO = Yii::$app->request->get('SSO');
+
+        if ($model->load(Yii::$app->request->post()) && $SSO == 'yes' && $model->SSOLogin()) {
+            $from_url = Yii::$app->session->get('from');
+            return $this->redirect($from_url);
+        }elseif($model->load(Yii::$app->request->post()) && $model->Login()) {
             $from_url = Yii::$app->session->get('from');
             return $this->redirect($from_url);
         }
@@ -49,10 +55,22 @@ class LoginController extends Controller
             return $this->goHome();
         }
 
+        if (!Yii::$app->session->has('from')){
+            $from = Yii::$app->request->get('from');
+            Yii::$app->session->set('from', $from);
+        }
+
         $model = new Login();
         $model->setScenario('mobile');
-        if ($model->load(Yii::$app->request->post()) && $model->MobileLogin()) {
-            return $this->goHome();
+
+        $SSO = Yii::$app->request->get('SSO');
+
+        if ($model->load(Yii::$app->request->post()) && $SSO == 'yes' && $model->SSOMobileLogin()) {
+            $from_url = Yii::$app->session->get('from');
+            return $this->redirect($from_url);
+        }elseif ($model->load(Yii::$app->request->post()) && $model->MobileLogin()) {
+            $from_url = Yii::$app->session->get('from');
+            return $this->redirect($from_url);
         }
 
         return $this->render('mobile',[
