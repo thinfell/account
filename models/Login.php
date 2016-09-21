@@ -89,7 +89,7 @@ class Login extends Model
     public function Login()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login(User::getUser($this->account), $this->rememberMe ? 3600 * 24 * 30 : 0);
+            return true;
         } else {
             return false;
 
@@ -99,7 +99,7 @@ class Login extends Model
     public function MobileLogin()
     {
         if ($this->validate()) {
-            return Yii::$app->user->login(User::getUserByMobile($this->mobile), $this->rememberMe ? 3600 * 24 * 30 : 0);
+            return true;
         } else {
             return false;
 

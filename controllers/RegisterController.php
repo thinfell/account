@@ -34,7 +34,7 @@ class RegisterController extends Controller
 
         $model = new Register();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            return $this->redirect('/sso/login');
+            return $this->redirect('/sso-api/login');
         }
 
         return $this->render('index',[

@@ -16,7 +16,7 @@ $this->registerJs('
         $.ajax({
             type: "get",
             async: !1,
-            url: \'http://\' + web + \'/index.php?r=sso/\' + aciton + \'&account=15556666551&AuthenTickitRequestParamName=yes\',
+            url: \'http://\' + web + \'/sso/\' + aciton + \'?account=15556666551&AuthenTickitRequestParamName=yes\',
             dataType: "jsonp",
             jsonp: "callback",
             complete: function (t) {

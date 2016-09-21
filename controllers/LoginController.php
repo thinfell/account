@@ -36,7 +36,7 @@ class LoginController extends Controller
         $model->setScenario('default');
 
         if($model->load(Yii::$app->request->post()) && $model->Login()) {
-            return $this->redirect('/sso/login');
+            return $this->redirect('/sso-api/login');
         }
 
         return $this->render('default',[
@@ -59,7 +59,7 @@ class LoginController extends Controller
         $model->setScenario('mobile');
 
         if ($model->load(Yii::$app->request->post()) && $model->MobileLogin()) {
-            return $this->redirect('/sso/login');
+            return $this->redirect('/sso-api/login');
         }
 
         return $this->render('mobile',[

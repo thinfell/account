@@ -5,7 +5,7 @@ namespace app\controllers;
 use Yii;
 use yii\web\Response;
 
-class SsoController extends \yii\web\Controller
+class SsoApiController extends \yii\web\Controller
 {
 
     public function actionLogin()
@@ -18,7 +18,7 @@ class SsoController extends \yii\web\Controller
 
     public function actionLogout()
     {
-        $from = Yii::$app->session->get('from');
+        $from = Yii::$app->request->get('from');
         return $this->render('logout', [
             'from' => $from,
         ]);
