@@ -2,26 +2,32 @@
 
 namespace app\controllers;
 
+use app\models\User;
 use Yii;
-use yii\web\Response;
+use yii\filters\AccessControl;
+use yii\web\Controller;
+use yii\filters\VerbFilter;
 
-class ServerController extends \yii\web\Controller
+class SsoController extends Controller
 {
-
-    public function actionLogin()
+   
+    /**
+     * Login action.
+     *
+     * @return string
+     */
+    public function actionLogin($account)
     {
-        $from = Yii::$app->session->get('from');
-        return $this->render('index', [
-            'from' => $from,
-        ]);
+		return Yii::$app->user->login(User::findByUsername($account), 0);
     }
 
+    /**
+     * Logout action.
+     *
+     * @return string
+     */
     public function actionLogout()
     {
-        $from = Yii::$app->session->get('from');
-        return $this->render('index', [
-            'from' => $from,
-        ]);
+        return Yii::$app->user->logout();
     }
-
 }
