@@ -96,16 +96,6 @@ class Login extends Model
         }
     }
 
-    public function SSOLogin()
-    {
-        if ($this->validate()) {
-            return true;
-        } else {
-            return false;
-
-        }
-    }
-
     public function MobileLogin()
     {
         if ($this->validate()) {
@@ -115,15 +105,4 @@ class Login extends Model
 
         }
     }
-
-    public function SSOMobileLogin()
-    {
-        if ($this->validate()) {
-            return true;
-        } else {
-            return false;
-
-        }
-    }
-
 }

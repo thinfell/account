@@ -17,7 +17,7 @@ SendSMSAsset::register($this);
 $items = [
     [
         'label' => '<i class="glyphicon glyphicon-th-large"></i> 普通登录',
-        'url' => Url::to(['/login/default', 'SSO' => $SSO]),
+        'url' => Url::to(['/login/default']),
     ],
     [
         'label' => '<i class="glyphicon glyphicon-phone"></i> 动态密码登录',

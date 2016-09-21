@@ -19,7 +19,7 @@ $items = [
     ],
     [
         'label' => '<i class="glyphicon glyphicon-phone"></i> 动态密码登录',
-        'url' => Url::to(['/login/mobile', 'SSO' => $SSO]),
+        'url' => Url::to(['/login/mobile']),
     ]
 ];
 

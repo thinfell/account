@@ -23,12 +23,8 @@ class RegisterController extends Controller
 
     public function actionIndex()
     {
-        $SSO = Yii::$app->request->get('SSO');
-
-        if (!Yii::$app->user->isGuest && $SSO != 'yes') {
+        if (!Yii::$app->user->isGuest) {
             return $this->goHome();
-        }elseif ($SSO == 'yes'){
-            Yii::$app->user->logout();
         }
 
         if (!Yii::$app->session->has('from')){
@@ -37,19 +33,14 @@ class RegisterController extends Controller
         }
 
         $model = new Register();
-        if ($model->load(Yii::$app->request->post()) && $SSO == 'yes' && $model->SSOsignup()) {
-            $from_url = Yii::$app->session->get('from');
-            Yii::$app->session->remove('from');
-            return $from_url ? $this->redirect(Url::to([$from_url, 'AuthenTickitRequestParamName' => 'yes'])) : $this->goHome();
-        }elseif ($model->load(Yii::$app->request->post()) && $model->signup()) {
+        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             $from_url = Yii::$app->session->get('from');
             Yii::$app->session->remove('from');
             return $from_url ? $this->redirect($from_url) : $this->goHome();
         }
 
         return $this->render('index',[
-            'model' => $model,
-            'SSO' => $SSO,
+            'model' => $model
         ]);
     }
 }

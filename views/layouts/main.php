@@ -10,7 +10,6 @@ use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
 
 AppAsset::register($this);
-$SSO = Yii::$app->request->get('SSO');
 
 ?>
 <?php $this->beginPage() ?>
@@ -38,8 +37,8 @@ $SSO = Yii::$app->request->get('SSO');
 
     if (Yii::$app->user->isGuest) {
         $items = [
-            ['label' => '登录', 'url' => ['/login/default', 'SSO' => $SSO]],
-            ['label' => '注册', 'url' => ['/register/index', 'SSO' => $SSO]],
+            ['label' => '登录', 'url' => ['/login/default']],
+            ['label' => '注册', 'url' => ['/register/index']],
         ];
     } else {
         $items[] = '<li>'
