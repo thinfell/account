@@ -36,9 +36,7 @@ class LoginController extends Controller
         $model->setScenario('default');
 
         if($model->load(Yii::$app->request->post()) && $model->Login()) {
-            $from_url = Yii::$app->session->get('from');
-            Yii::$app->session->remove('from');
-            return $from_url ? $this->redirect($from_url) : $this->goHome();
+            return $this->redirect('/sso/login');
         }
 
         return $this->render('default',[
@@ -61,9 +59,7 @@ class LoginController extends Controller
         $model->setScenario('mobile');
 
         if ($model->load(Yii::$app->request->post()) && $model->MobileLogin()) {
-            $from_url = Yii::$app->session->get('from');
-            Yii::$app->session->remove('from');
-            return $from_url ? $this->redirect($from_url) : $this->goHome();
+            return $this->redirect('/sso/login');
         }
 
         return $this->render('mobile',[

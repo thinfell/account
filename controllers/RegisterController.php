@@ -34,9 +34,7 @@ class RegisterController extends Controller
 
         $model = new Register();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            $from_url = Yii::$app->session->get('from');
-            Yii::$app->session->remove('from');
-            return $from_url ? $this->redirect($from_url) : $this->goHome();
+            return $this->redirect('/sso/login');
         }
 
         return $this->render('index',[

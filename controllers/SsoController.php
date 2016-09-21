@@ -8,15 +8,20 @@ use yii\web\Response;
 class ServerController extends \yii\web\Controller
 {
 
-    public  $enableCsrfValidation = false;
-
-    public function actionIndex()
+    public function actionLogin()
     {
-        Yii::$app->response->format = Response::FORMAT_JSON;
-        $return = [
-            'a' => 1
-        ];
-        return $return;
+        $from = Yii::$app->session->get('from');
+        return $this->render('index', [
+            'from' => $from,
+        ]);
+    }
+
+    public function actionLogout()
+    {
+        $from = Yii::$app->session->get('from');
+        return $this->render('index', [
+            'from' => $from,
+        ]);
     }
 
 }

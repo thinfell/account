@@ -8,14 +8,9 @@
 ?>
 <script>
     $(document).ready(function () {
-        ssohelper('a.com', 'login');
-        ssohelper('b.com', 'login');
-        ssohelper('c.com', 'login');
-        $("#logout").click(function () {
-            ssohelper('a.com', 'logout');
-            ssohelper('b.com', 'logout');
-            ssohelper('c.com', 'logout');
-        });
+        ssohelper('a.com', 'logout');
+        ssohelper('b.com', 'logout');
+        ssohelper('c.com', 'logout');
     });
     function ssohelper(web, aciton) {
         $.ajax({
