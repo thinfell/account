@@ -49,11 +49,11 @@ class RegisterController extends Controller
 
             $tickit = new Tickit();
             $tickit->user_id = $user->id;
-            $tickit->action = 'login';
+            $tickit->action = 'register';
             $tickit->value = $AuthenTickitRequestParamName;
             $tickit->creation_time = $timestamp;
             if($tickit->save()){
-                return $this->render('/sso-api/login', [
+                return $this->render('/sso-api/register', [
                     'website' => $website,
                     'AuthenTickitRequestParamName' => $AuthenTickitRequestParamName,
                 ]);
