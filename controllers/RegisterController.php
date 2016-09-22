@@ -2,6 +2,9 @@
 
 namespace app\controllers;
 
+use app\models\Tickit;
+use app\models\User;
+use app\models\Website;
 use Yii;
 use app\models\Register;
 use yii\helpers\Url;
@@ -34,11 +37,33 @@ class RegisterController extends Controller
 
         $model = new Register();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            return $this->redirect('/sso-api/login');
-        }
+            $this->layout = 'SsoApi';
+            $website = Website::find()->all();
 
-        return $this->render('index',[
-            'model' => $model
-        ]);
+            $user = User::getUserByMobile($model->mobile);
+
+            $timestamp = microtime(true) * 10000;
+            $AuthenTickitRequestParamName = md5($user->id.$timestamp);
+            $AuthenTickitRequestParamName = bin2hex($AuthenTickitRequestParamName);
+            $AuthenTickitRequestParamName = strtoupper($AuthenTickitRequestParamName);
+
+            $tickit = new Tickit();
+            $tickit->user_id = $user->id;
+            $tickit->action = 'login';
+            $tickit->value = $AuthenTickitRequestParamName;
+            $tickit->creation_time = $timestamp;
+            if($tickit->save()){
+                return $this->render('/sso-api/login', [
+                    'website' => $website,
+                    'AuthenTickitRequestParamName' => $AuthenTickitRequestParamName,
+                ]);
+            }else{
+                print_r($tickit->errors);
+            }
+        }else{
+            return $this->render('index',[
+                'model' => $model
+            ]);
+        }
     }
 }

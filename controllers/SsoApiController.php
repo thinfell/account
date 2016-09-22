@@ -2,15 +2,13 @@
 
 namespace app\controllers;
 
-use app\models\Tickit;
-use app\models\User;
 use Yii;
-use app\models\Login;
-use yii\helpers\Url;
+use app\models\Tickit;
 use yii\web\Controller;
 use app\models\Website;
+use yii\web\Response;
 
-class LoginController extends Controller
+class SsoApiController extends Controller
 {
     /**
      * @inheritdoc
@@ -24,72 +22,47 @@ class LoginController extends Controller
         ];
     }
 
-    public function actionDefault()
+    public function actionLogin()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $sso_website_id = Yii::$app->request->get('sso_website_id');
+        $website = Website::findOne($sso_website_id);
+        if(!isset($website->secret)){
+            return [
+                'code' => 0,
+                'message' => 'sso_website_id error',
+            ];
         }
-
-        if (!Yii::$app->session->has('from')){
-            $from = Yii::$app->request->get('from');
-            Yii::$app->session->set('from', $from);
+        $sso_website_secret = $website->secret;
+        $sign = Yii::$app->request->get('sign');
+        $timestamp = Yii::$app->request->get('timestamp');
+        if(md5($sso_website_id.$sso_website_secret.$timestamp) != $sign){
+            return [
+                'code' => 0,
+                'message' => 'sign error',
+            ];
         }
-
-        $model = new Login();
-        $model->setScenario('default');
-
-        if($model->load(Yii::$app->request->post()) && $model->Login()) {
-            $this->layout = 'SsoApi';
-            $website = Website::find()->all();
-
-            $user = User::getUser($model->account);
-
-            $timestamp = microtime(true) * 10000;
-            $AuthenTickitRequestParamName = md5($user->id.$timestamp);
-            $AuthenTickitRequestParamName = bin2hex($AuthenTickitRequestParamName);
-            $AuthenTickitRequestParamName = strtoupper($AuthenTickitRequestParamName);
-
-            $tickit = new Tickit();
-            $tickit->user_id = $user->id;
-            $tickit->action = 'login';
-            $tickit->value = $AuthenTickitRequestParamName;
-            $tickit->t = $timestamp;
-            if($tickit->save()){
-                return $this->render('/sso-api/login', [
-                    'website' => $website,
-                    'AuthenTickitRequestParamName' => $AuthenTickitRequestParamName,
-                ]);
-            }else{
-                print_r($tickit->errors);
-            }
-        }else{
-            return $this->render('default',[
-                'model' => $model
-            ]);
+        $AuthenTickitRequestParamName = Yii::$app->request->get('AuthenTickitRequestParamName');
+        $tickit = Tickit::find()->where(['value' => $AuthenTickitRequestParamName])->one();
+        if(!isset($tickit->user_id)){
+            return [
+                'code' => 0,
+                'message' => 'AuthenTickitRequestParamName error',
+            ];
         }
+        Tickit::deleteAll(['value' => $AuthenTickitRequestParamName]);
+        return [
+            'code' => 200,
+            'message' => $tickit->user_id,
+        ];
     }
 
-    public function actionMobile()
+    public function actionLogout()
     {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        if (!Yii::$app->session->has('from')){
-            $from = Yii::$app->request->get('from');
-            Yii::$app->session->set('from', $from);
-        }
-
-        $model = new Login();
-        $model->setScenario('mobile');
-
-        if ($model->load(Yii::$app->request->post()) && $model->MobileLogin()) {
-            return $this->redirect('/sso-api/login');
-        }
-
-        return $this->render('mobile',[
-            'model' => $model
+        $this->layout = 'SsoApi';
+        $website = Website::find()->all();
+        return $this->render('/sso-api/logout', [
+            'website' => $website
         ]);
     }
-
 }

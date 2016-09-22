@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ef9e55fc587c9a0477ea3e8f08b697d9",
-    "content-hash": "962468505a9f13175cf567df180467d9",
+    "hash": "b6a6a8935e4676e94f1614e148c3a37b",
+    "content-hash": "eeffecf087e86894d518c8dfa2a10deb",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -1706,6 +1706,46 @@
                 "yii2"
             ],
             "time": "2014-11-09 19:54:17"
+        },
+        {
+            "name": "panwenbin/curl",
+            "version": "0.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/panwenbin/curl.git",
+                "reference": "d815072596a4b1fae976817ebb116735adf618f2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/panwenbin/curl/zipball/d815072596a4b1fae976817ebb116735adf618f2",
+                "reference": "d815072596a4b1fae976817ebb116735adf618f2",
+                "shasum": ""
+            },
+            "require": {
+                "ext-curl": "*",
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "panwenbin\\helper\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pan Wenbin",
+                    "email": "panwenbin@gmail.com"
+                }
+            ],
+            "description": "curl简单封装",
+            "keywords": [
+                "curl"
+            ],
+            "time": "2016-09-05 06:00:29"
         },
         {
             "name": "swiftmailer/swiftmailer",

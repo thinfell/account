@@ -79,8 +79,7 @@ class Login extends Model
     {
         if (!$this->hasErrors()) {
             $user = User::getUser($this->account);
-            $password_hash = $user->password_hash;
-            if (!$user || !Yii::$app->security->validatePassword($this->password, $password_hash)) {
+            if (!$user || !Yii::$app->security->validatePassword($this->password, $user->password_hash)) {
                 $this->addError($attribute, '账号或密码错误');
             }
         }
