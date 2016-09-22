@@ -20,7 +20,6 @@
         "yiisoft/yii2-swiftmailer": "*",
         "kartik-v/yii2-widgets": "*",
         "kartik-v/yii2-tabs-x": "*",
-        "jasny/sso": "^0.2.3",
         "panwenbin/curl": "^0.1.2"
     },
     "require-dev": {
