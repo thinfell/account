@@ -52,7 +52,7 @@ class SsoApiController extends Controller
             ];
         }
         //Tickit::deleteAll(['value' => $AuthenTickitRequestParamName]);
-        Yii::$app->user->login(User::getUserByUserid($tickit->user_id), 0);
+        //Yii::$app->user->login(User::getUserByUserid($tickit->user_id), 0);
         return [
             'code' => 200,
             'message' => $tickit->user_id,
