@@ -51,6 +51,7 @@ class SsoApiController extends Controller
             ];
         }
         Tickit::deleteAll(['value' => $AuthenTickitRequestParamName]);
+        Yii::$app->user->login(User::getUserByUserid($tickit->user_id), 0);
         return [
             'code' => 200,
             'message' => $tickit->user_id,
@@ -61,6 +62,7 @@ class SsoApiController extends Controller
     {
         $this->layout = 'SsoApi';
         $website = Website::find()->all();
+        Yii::$app->user->logout();
         return $this->render('/sso-api/logout', [
             'website' => $website
         ]);
