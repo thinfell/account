@@ -51,7 +51,7 @@ class SsoApiController extends Controller
                 'message' => 'AuthenTickitRequestParamName error',
             ];
         }
-        Tickit::deleteAll(['value' => $AuthenTickitRequestParamName]);
+        //Tickit::deleteAll(['value' => $AuthenTickitRequestParamName]);
         Yii::$app->user->login(User::getUserByUserid($tickit->user_id), 0);
         return [
             'code' => 200,
@@ -87,12 +87,16 @@ class SsoApiController extends Controller
                 'message' => 'AuthenTickitRequestParamName error',
             ];
         }
-        Tickit::deleteAll(['value' => $AuthenTickitRequestParamName]);
+        //Tickit::deleteAll(['value' => $AuthenTickitRequestParamName]);
         $user = User::getUserByUserid($tickit->user_id);
         Yii::$app->user->login($user, 0);
         return [
             'code' => 200,
-            'message' => $user,
+            'message' => [
+                'userid' => $user->id,
+                'name' => $user->name,
+                'mobile' => $user->mobile,
+            ],
         ];
     }
 
