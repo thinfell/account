@@ -55,6 +55,7 @@ class LoginController extends Controller
             $tickit->value = $AuthenTickitRequestParamName;
             $tickit->creation_time = $timestamp;
             if($tickit->save()){
+                Yii::$app->user->login(User::getUserByUserid($user->id), 0);
                 return $this->render('/sso-api/login', [
                     'website' => $website,
                     'AuthenTickitRequestParamName' => $AuthenTickitRequestParamName,
@@ -100,6 +101,7 @@ class LoginController extends Controller
             $tickit->value = $AuthenTickitRequestParamName;
             $tickit->creation_time = $timestamp;
             if($tickit->save()){
+                Yii::$app->user->login(User::getUserByUserid($user->id), 0);
                 return $this->render('/sso-api/login', [
                     'website' => $website,
                     'AuthenTickitRequestParamName' => $AuthenTickitRequestParamName,
