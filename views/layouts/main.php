@@ -51,7 +51,7 @@ AppAsset::register($this);
             .
             '</li>';
     }
-
+    $items[] = ['label' => '站点管理', 'url' => ['/website/index']];
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => $items,
