@@ -13,6 +13,7 @@ class m160922_020801_tickit extends Migration
 
         $this->createTable('tickit', [
             'id' => $this->primaryKey()->notNull()->comment('编号'),
+            'webid' => $this->integer()->notNull()->comment('站点编号'),
             'value' => $this->string()->notNull()->comment('密钥'),
             'user_id' => $this->integer()->notNull()->comment('用户编号'),
             'creation_time' => $this->string()->notNull()->comment('生成毫秒时间'),

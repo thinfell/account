@@ -47,19 +47,21 @@ class RegisterController extends Controller
             $AuthenTickitRequestParamName = bin2hex($AuthenTickitRequestParamName);
             $AuthenTickitRequestParamName = strtoupper($AuthenTickitRequestParamName);
 
-            $tickit = new Tickit();
-            $tickit->user_id = $user->id;
-            $tickit->action = 'register';
-            $tickit->value = $AuthenTickitRequestParamName;
-            $tickit->creation_time = $timestamp;
-            if($tickit->save()){
-                return $this->render('/sso-api/register', [
-                    'website' => $website,
-                    'AuthenTickitRequestParamName' => $AuthenTickitRequestParamName,
-                ]);
-            }else{
-                print_r($tickit->errors);
+            $insertData = [];
+            foreach ($website as $val) {
+                $insertData[] = [$user->id, $val->id, 'register', $AuthenTickitRequestParamName, $timestamp];
             }
+
+            $insertData = array_values($insertData);
+
+            // INSERT 一次插入多行
+            Yii::$app->db->createCommand()->batchInsert('tickit', ['user_id', 'webid', 'action', 'value', 'creation_time'], $insertData)->execute();
+
+            return $this->render('/sso-api/register', [
+                'website' => $website,
+                'AuthenTickitRequestParamName' => $AuthenTickitRequestParamName,
+            ]);
+
         }else{
             return $this->render('index',[
                 'model' => $model

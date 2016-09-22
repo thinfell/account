@@ -30,7 +30,7 @@ class LoginController extends Controller
             return $this->goHome();
         }
 
-        if (!Yii::$app->session->has('from')){
+        if (!Yii::$app->session->has('from')) {
             $from = Yii::$app->request->get('from');
             Yii::$app->session->set('from', $from);
         }
@@ -38,33 +38,35 @@ class LoginController extends Controller
         $model = new Login();
         $model->setScenario('default');
 
-        if($model->load(Yii::$app->request->post()) && $model->Login()) {
+        if ($model->load(Yii::$app->request->post()) && $model->Login()) {
             $this->layout = 'SsoApi';
             $website = Website::find()->all();
 
             $user = User::getUser($model->account);
 
             $timestamp = microtime(true) * 10000;
-            $AuthenTickitRequestParamName = md5($user->id.$timestamp);
+            $AuthenTickitRequestParamName = md5($user->id . $timestamp);
             $AuthenTickitRequestParamName = bin2hex($AuthenTickitRequestParamName);
             $AuthenTickitRequestParamName = strtoupper($AuthenTickitRequestParamName);
 
-            $tickit = new Tickit();
-            $tickit->user_id = $user->id;
-            $tickit->action = 'login';
-            $tickit->value = $AuthenTickitRequestParamName;
-            $tickit->creation_time = $timestamp;
-            if($tickit->save()){
-                Yii::$app->user->login(User::getUserByUserid($user->id), 0);
-                return $this->render('/sso-api/login', [
-                    'website' => $website,
-                    'AuthenTickitRequestParamName' => $AuthenTickitRequestParamName,
-                ]);
-            }else{
-                print_r($tickit->errors);
+            $insertData = [];
+            foreach ($website as $val) {
+                $insertData[] = [$user->id, $val->id, 'login', $AuthenTickitRequestParamName, $timestamp];
             }
-        }else{
-            return $this->render('default',[
+
+            $insertData = array_values($insertData);
+
+            // INSERT 一次插入多行
+            Yii::$app->db->createCommand()->batchInsert('tickit', ['user_id', 'webid', 'action', 'value', 'creation_time'], $insertData)->execute();
+
+            Yii::$app->user->login(User::getUserByUserid($user->id), 0);
+            return $this->render('/sso-api/login', [
+                'website' => $website,
+                'AuthenTickitRequestParamName' => $AuthenTickitRequestParamName,
+            ]);
+
+        } else {
+            return $this->render('default', [
                 'model' => $model
             ]);
         }
@@ -76,7 +78,7 @@ class LoginController extends Controller
             return $this->goHome();
         }
 
-        if (!Yii::$app->session->has('from')){
+        if (!Yii::$app->session->has('from')) {
             $from = Yii::$app->request->get('from');
             Yii::$app->session->set('from', $from);
         }
@@ -87,33 +89,34 @@ class LoginController extends Controller
         if ($model->load(Yii::$app->request->post()) && $model->MobileLogin()) {
             $this->layout = 'SsoApi';
             $website = Website::find()->all();
-
             $user = User::getUserByMobile($model->mobile);
 
             $timestamp = microtime(true) * 10000;
-            $AuthenTickitRequestParamName = md5($user->id.$timestamp);
+            $AuthenTickitRequestParamName = md5($user->id . $timestamp);
             $AuthenTickitRequestParamName = bin2hex($AuthenTickitRequestParamName);
             $AuthenTickitRequestParamName = strtoupper($AuthenTickitRequestParamName);
 
-            $tickit = new Tickit();
-            $tickit->user_id = $user->id;
-            $tickit->action = 'login';
-            $tickit->value = $AuthenTickitRequestParamName;
-            $tickit->creation_time = $timestamp;
-            if($tickit->save()){
-                Yii::$app->user->login(User::getUserByUserid($user->id), 0);
-                return $this->render('/sso-api/login', [
-                    'website' => $website,
-                    'AuthenTickitRequestParamName' => $AuthenTickitRequestParamName,
-                ]);
-            }else{
-                print_r($tickit->errors);
+            $insertData = [];
+            foreach ($website as $val) {
+                $insertData[] = [$user->id, $val->id, 'login', $AuthenTickitRequestParamName, $timestamp];
             }
-        }
 
-        return $this->render('mobile',[
-            'model' => $model
-        ]);
+            $insertData = array_values($insertData);
+
+            // INSERT 一次插入多行
+            Yii::$app->db->createCommand()->batchInsert('tickit', ['user_id', 'webid', 'action', 'value', 'creation_time'], $insertData)->execute();
+
+            Yii::$app->user->login(User::getUserByUserid($user->id), 0);
+            return $this->render('/sso-api/login', [
+                'website' => $website,
+                'AuthenTickitRequestParamName' => $AuthenTickitRequestParamName,
+            ]);
+        } else {
+
+            return $this->render('mobile', [
+                'model' => $model
+            ]);
+        }
     }
 
 }

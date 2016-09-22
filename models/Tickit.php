@@ -29,8 +29,8 @@ class Tickit extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['value', 'user_id', 'creation_time', 'action'], 'required'],
-            [['user_id'], 'integer'],
+            [['value', 'user_id', 'creation_time', 'action', 'webid'], 'required'],
+            [['user_id', 'webid'], 'integer'],
             [['value', 'creation_time', 'action'], 'safe'],
         ];
     }
