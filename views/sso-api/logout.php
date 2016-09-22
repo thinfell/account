@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>login</title>
+    <title>logout</title>
 </head>
 <script language="javascript">
     setTimeout("process", 3000);
