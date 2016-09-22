@@ -2,72 +2,94 @@
 
 namespace app\controllers;
 
+use app\models\Tickit;
+use app\models\User;
 use Yii;
+use app\models\Login;
+use yii\helpers\Url;
+use yii\web\Controller;
+use app\models\Website;
 
-class SsoApiController extends \yii\web\Controller
+class LoginController extends Controller
 {
-
-    public function actionLogin()
+    /**
+     * @inheritdoc
+     */
+    public function actions()
     {
-        ?>
-        <html>
-        <head>
-            <title></title>
-        </head>
-        <script language="javascript">
-            function process() {
-                var returnUrl = '<?=Yii::$app->session->get('from')?>';
-                if (returnUrl) {
-                    window.location.href = returnUrl;
-                }
-                else if (document.referrer) {
-                    window.location.href = document.referrer;
-                }
-            }
-        </script>
-        <script language="javascript">
-            setTimeout("process", 3000);
-        </script>
-        <body onload="process()">
-        <img style="display:none" src="http://a.com/sso/login?account=15556666551&AuthenTickitRequestParamName=yes"/>
-        <img style="display:none" src="http://b.com/sso/login?account=15556666551&AuthenTickitRequestParamName=yes"/>
-        <img style="display:none" src="http://c.com/sso/login?account=15556666551&AuthenTickitRequestParamName=yes"/>
-        <img style="display:none" src="http://account.chelintong.com/sso/login?account=15556666551&AuthenTickitRequestParamName=yes"/>
-        </body>
-        </html>
-        <?php
-
+        return [
+            'error' => [
+                'class' => 'yii\web\ErrorAction',
+            ]
+        ];
     }
 
-    public function actionLogout()
+    public function actionDefault()
     {
-        ?>
-        <html>
-        <head>
-            <title></title>
-        </head>
-        <script language="javascript">
-            function process() {
-                var returnUrl = '<?=Yii::$app->request->get('from')?>';
-                if (returnUrl) {
-                    window.location.href = returnUrl;
-                }
-                else if (document.referrer) {
-                    window.location.href = document.referrer;
-                }
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        if (!Yii::$app->session->has('from')){
+            $from = Yii::$app->request->get('from');
+            Yii::$app->session->set('from', $from);
+        }
+
+        $model = new Login();
+        $model->setScenario('default');
+
+        if($model->load(Yii::$app->request->post()) && $model->Login()) {
+            $this->layout = 'SsoApi';
+            $website = Website::find()->all();
+
+            $user = User::getUser($model->account);
+
+            $timestamp = microtime(true) * 10000;
+            $AuthenTickitRequestParamName = md5($user->id.$timestamp);
+            $AuthenTickitRequestParamName = bin2hex($AuthenTickitRequestParamName);
+            $AuthenTickitRequestParamName = strtoupper($AuthenTickitRequestParamName);
+
+            $tickit = new Tickit();
+            $tickit->user_id = $user->id;
+            $tickit->action = 'login';
+            $tickit->value = $AuthenTickitRequestParamName;
+            $tickit->t = $timestamp;
+            if($tickit->save()){
+                return $this->render('/sso-api/login', [
+                    'website' => $website,
+                    'AuthenTickitRequestParamName' => $AuthenTickitRequestParamName,
+                ]);
+            }else{
+                print_r($tickit->errors);
             }
-        </script>
-        <script language="javascript">
-            setTimeout("process", 3000);
-        </script>
-        <body onload="process()">
-        <img style="display:none" src="http://a.com/sso/logout?account=15556666551&AuthenTickitRequestParamName=yes"/>
-        <img style="display:none" src="http://b.com/sso/logout?account=15556666551&AuthenTickitRequestParamName=yes"/>
-        <img style="display:none" src="http://c.com/sso/logout?account=15556666551&AuthenTickitRequestParamName=yes"/>
-        <img style="display:none" src="http://account.chelintong.com/sso/logout?account=15556666551&AuthenTickitRequestParamName=yes"/>
-        </body>
-        </html>
-        <?php
+        }else{
+            return $this->render('default',[
+                'model' => $model
+            ]);
+        }
+    }
+
+    public function actionMobile()
+    {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+
+        if (!Yii::$app->session->has('from')){
+            $from = Yii::$app->request->get('from');
+            Yii::$app->session->set('from', $from);
+        }
+
+        $model = new Login();
+        $model->setScenario('mobile');
+
+        if ($model->load(Yii::$app->request->post()) && $model->MobileLogin()) {
+            return $this->redirect('/sso-api/login');
+        }
+
+        return $this->render('mobile',[
+            'model' => $model
+        ]);
     }
 
 }
