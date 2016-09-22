@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>login</title>
+    <title>register</title>
 </head>
 <script language="javascript">
     setTimeout("process", 3000);
@@ -17,7 +17,7 @@
 <?php
 foreach ($website as $val) {
     ?>
-    <img src="<?=$val->url?>sso/logout"/>
+    <img src="<?=$val->url?>sso/register?AuthenTickitRequestParamName=<?=$AuthenTickitRequestParamName?>"/>
     <?php
 }
 ?>
